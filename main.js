@@ -1,30 +1,36 @@
-const { app, BrowserWindow } = require('electron')
+const electron = require('electron')
+const { app, BrowserWindow, Menu } = electron
 
-function createWindow() {
-    // Créer la fenêtre du navigateur
-    let win = new BrowserWindow({ width: 800, height: 600 })
-
-    // et charge le index.html
-    win.loadFile('assets/html/index.html')
-
-    // Ouvre les devTools
-    if (process.env.NODE_ENV !== 'production') {
-        win.webContents.openDevTools()
-    }
-
-    // Emit lorsque la fenêtre est fermée
-    win.on('closed', () => {
-        // Dé-référence de l'objet window, normalement, vous stockeriez les fenêtre
-        // dans un tableau si votre application supporte le multi-fenêtre. C'est le moment
-        // où vous devez supprimer l'élément correspondant
-        win = null
-    })
-}
 
 // Cette méthode sera appelée quand Electron aura fini
 // de s'initialiser et sera prêt à créer des fenêtres de navigation.
 // Certaines APIs peuvent être utilisées uniquement quand cette évènement est émit
-app.on('ready', createWindow)
+app.on('ready', () => {
+    // Créer la fenêtre du navigateur
+    let mainWin = new BrowserWindow({ 
+        width: 800, 
+        height: 600
+    })
+
+    // et charge le index.html
+    mainWin.loadFile('assets/html/index.html')
+
+    // Affichage de la barre de menu à false
+    Menu.setApplicationMenu(null);
+
+    // Ouvre les devTools
+    if (process.env.NODE_ENV !== 'production') {
+        mainWin.webContents.openDevTools()
+    }
+
+    // Emit lorsque la fenêtre est fermée
+    mainWin.on('closed', () => {
+        // Dé-référence de l'objet window, normalement, vous stockeriez les fenêtre
+        // dans un tableau si votre application supporte le multi-fenêtre. C'est le moment
+        // où vous devez supprimer l'élément correspondant
+        mainWin = null
+    })
+})
 
 // Quitte l'application quand toutes les fenêtres sont fermées
 app.on('window-all-closed', () => {
