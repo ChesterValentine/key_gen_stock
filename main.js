@@ -1,6 +1,9 @@
 const electron = require('electron')
 const { app, BrowserWindow, Menu } = electron
 
+function createAddPassWindow() {
+
+}
 
 // Cette méthode sera appelée quand Electron aura fini
 // de s'initialiser et sera prêt à créer des fenêtres de navigation.
@@ -10,7 +13,7 @@ app.on('ready', () => {
     let mainWin = new BrowserWindow({ 
         width: 800, 
         height: 600,
-        maxWidth: 1000
+        minWidth: 476
     })
 
     // et charge le index.html
@@ -28,6 +31,11 @@ app.on('ready', () => {
         // où vous devez supprimer l'élément correspondant
         mainWin = null
     })
+
+    // Créer le menu à partir du template
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate)
+    // Insérer le menu
+    Menu.setApplicationMenu(mainMenu);
 })
 
 // Quitte l'application quand toutes les fenêtres sont fermées
@@ -48,3 +56,28 @@ app.on('activate', () => {
 })
 
 // Dans ce fichier, vous pouvez inclure le reste de votre code spécifique au processus principal. Vous pouvez également le mettre dans des fichiers séparés et les inclure ici.
+const mainMenuTemplate = [
+    {
+        label: 'Fichier',
+        submenu: [
+            {
+                label: 'Ajouter un mot de passe',
+                click() {
+                    createAddPassWindow()
+                }
+            },
+            {
+                label: 'Quitter',
+                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+                click() {
+                    app.quit()
+                }
+            }
+        ]
+    }
+]
+
+// Si l'OS est mac, ajouter un objet vide au menu
+if (process.platform == 'darwin'){
+    mainMenuTemplate.unshift({});
+}
