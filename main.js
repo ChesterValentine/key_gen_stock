@@ -9,7 +9,8 @@ app.on('ready', () => {
     // Créer la fenêtre du navigateur
     let mainWin = new BrowserWindow({ 
         width: 800, 
-        height: 600
+        height: 600,
+        maxWidth: 1000
     })
 
     // et charge le index.html
