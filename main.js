@@ -15,9 +15,6 @@ app.on('ready', () => {
     // et charge le index.html
     mainWin.loadFile('assets/html/index.html')
 
-    // Affichage de la barre de menu à false
-    Menu.setApplicationMenu(null);
-
     // Ouvre les devTools
     if (process.env.NODE_ENV !== 'production') {
         mainWin.webContents.openDevTools()
