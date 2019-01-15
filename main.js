@@ -1,8 +1,19 @@
 const electron = require('electron')
 const { app, BrowserWindow, Menu } = electron
 
-function createAddPassWindow() {
+let mainWin
+let addPassWin
 
+// Fenêtre de création de mot de passe
+function createAddPassWindow() {
+    addPassWin = new BrowserWindow({
+        width: 400,
+        height: 350,
+        resizable: false,
+        frame: false
+    })
+
+    addPassWin.loadFile('assets/html/addpass.html')
 }
 
 // Cette méthode sera appelée quand Electron aura fini
@@ -10,7 +21,7 @@ function createAddPassWindow() {
 // Certaines APIs peuvent être utilisées uniquement quand cette évènement est émit
 app.on('ready', () => {
     // Créer la fenêtre du navigateur
-    let mainWin = new BrowserWindow({ 
+        mainWin = new BrowserWindow({ 
         width: 800, 
         height: 600,
         minWidth: 476
