@@ -1,3 +1,7 @@
+.row {
+    max-width: 100% !important;
+}
+
 .title {
     background-color: red ;
     color: white;

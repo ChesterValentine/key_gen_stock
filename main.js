@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { app, BrowserWindow, Menu } = electron
+const { app, BrowserWindow, Menu,  ipcMain} = electron
 
 let mainWin
 let addPassWin
@@ -7,13 +7,27 @@ let addPassWin
 // Fenêtre de création de mot de passe
 function createAddPassWindow() {
     addPassWin = new BrowserWindow({
+        parent: mainWin,
+        modal: true,
+        show: false,
         width: 400,
         height: 350,
         resizable: false,
         frame: false
     })
 
-    addPassWin.loadFile('assets/html/addpass.html')
+    addPassWin.loadFile('renderer/html/addpass.html')
+
+    addPassWin.once('ready-to-show', () => {
+        mainWin.setBackgroundColor('#000')
+        
+        addPassWin.show()
+    })
+
+    // Emit lorsque la fenêtre est fermée --Pour le Garbage Collector--
+    addPassWin.on('closed', () => {
+        addPassWin = null
+    })
 }
 
 // Cette méthode sera appelée quand Electron aura fini
@@ -28,14 +42,14 @@ app.on('ready', () => {
     })
 
     // et charge le index.html
-    mainWin.loadFile('assets/html/index.html')
+    mainWin.loadFile('renderer/html/index.html')
 
     // Ouvre les devTools
     if (process.env.NODE_ENV !== 'production') {
         mainWin.webContents.openDevTools()
     }
 
-    // Emit lorsque la fenêtre est fermée
+    // Emit lorsque la fenêtre est fermée --Pour le Garbage Collector--
     mainWin.on('closed', () => {
         // Dé-référence de l'objet window, normalement, vous stockeriez les fenêtre
         // dans un tableau si votre application supporte le multi-fenêtre. C'est le moment
@@ -45,6 +59,7 @@ app.on('ready', () => {
 
     // Créer le menu à partir du template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate)
+    
     // Insérer le menu
     Menu.setApplicationMenu(mainMenu);
 })
