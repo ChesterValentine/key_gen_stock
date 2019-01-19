@@ -26,14 +26,17 @@
             </div>
         </div>
         <div class="row align-center">
-            <div class="column small-12">
+            <div class="column small-9">
                 <label for="mdp">Mot de passe :</label>
                 <input type="text" id="mdp" placeholder="Insérer un mot de passe ou cliquer sur générer">
+            </div>
+            <div class="column small-3 align-self-bottom">
+                <button type="button" id="keygen" class="button expanded">Générer</button>
             </div>
         </div>
         <div class="row align-center">
             <div class="column small-4">
-                <button type="button" id="keygen" class="success button expanded">Générer</button>
+                <button type="submit" id="send" class="success button expanded">Sauvegarder</button>
             </div>
         </div>
         <div class="row align-center">
@@ -44,5 +47,9 @@
     </form>
     <script src="../js/vendor/jquery.js"></script>
     <script src="../js/vendor/foundation.js"></script>
+
+    <script>
+        require('../js/addPass.js')
+    </script>
 </body>
 </html>

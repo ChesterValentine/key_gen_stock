@@ -1,34 +1,47 @@
 const electron = require('electron')
-const { app, BrowserWindow, Menu,  ipcMain} = electron
+const { app, BrowserWindow, Menu, MenuItem, ipcMain} = electron
 
 let mainWin
 let addPassWin
 
 // Fenêtre de création de mot de passe
 function createAddPassWindow() {
+    // Création de l'objet BrowserWindow contenant les options de la fenêtre d'ajout
     addPassWin = new BrowserWindow({
         parent: mainWin,
         modal: true,
         show: false,
-        width: 400,
+        width: 500,
         height: 350,
         resizable: false,
         frame: false
     })
 
+    // Chargement du fichier HTML
     addPassWin.loadFile('renderer/html/addpass.html')
 
+    // Event dés que la fenêtre est prête
     addPassWin.once('ready-to-show', () => {
-        mainWin.setBackgroundColor('#000')
-        
+        // Envoi des infos à la fenêtre principal via l'event addPass:show
+        // Vide ici car on ne veut que envoyer un event
+        mainWin.webContents.send('addPass:show', '')
+        // Affichage de la fenêtre
         addPassWin.show()
     })
 
     // Emit lorsque la fenêtre est fermée --Pour le Garbage Collector--
     addPassWin.on('closed', () => {
+        // Garbage Collector
         addPassWin = null
+        // Envoi des infos à la fenêtre principal via l'event addPass:cloded
+        // Vide ici car on ne veut que envoyer un event
+        mainWin.webContents.send('addPass:closed', '')
     })
 }
+
+///////////////////////
+////// APP EVENT //////
+///////////////////////
 
 // Cette méthode sera appelée quand Electron aura fini
 // de s'initialiser et sera prêt à créer des fenêtres de navigation.
@@ -80,6 +93,19 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+////////////////////////
+//// RENDERER EVENT ////
+////////////////////////
+
+//Catch l'event addPass:quit
+ipcMain.on('addPass:quit', (event,arg) => {
+    addPassWin.close()
+})
+
+//////////////////////
+//////// MENU ////////
+//////////////////////
 
 // Dans ce fichier, vous pouvez inclure le reste de votre code spécifique au processus principal. Vous pouvez également le mettre dans des fichiers séparés et les inclure ici.
 const mainMenuTemplate = [
