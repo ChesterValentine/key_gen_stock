@@ -23,7 +23,7 @@ ipcRenderer.on('items:add', (event,arg) => {
     })
     let columnRow = document.createElement('td')
     let imgColumn = document.createElement('img')
-    columnRow.className = 'text-center'
+    columnRow.className = 'text-center del'
     imgColumn.src = '../img/trash.png'
     columnRow.appendChild(imgColumn)
     rowTable.appendChild(columnRow)
