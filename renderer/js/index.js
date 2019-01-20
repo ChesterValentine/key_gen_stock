@@ -21,6 +21,7 @@ ipcRenderer.on('items:add', (event,arg) => {
         columnRow.innerHTML = arg[objectKey]
         rowTable.appendChild(columnRow)
     })
+    
     let columnRow = document.createElement('td')
     let imgColumn = document.createElement('img')
     columnRow.className = 'text-center del'
