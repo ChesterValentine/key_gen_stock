@@ -103,6 +103,10 @@ ipcMain.on('addPass:quit', (event,arg) => {
     addPassWin.close()
 })
 
+ipcMain.on('items:add', (event,arg) => {
+    mainWin.webContents.send('items:add', arg)
+})
+
 //////////////////////
 //////// MENU ////////
 //////////////////////
