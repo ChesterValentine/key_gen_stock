@@ -14,7 +14,7 @@ sendBtn.addEventListener('click', (event) => {
     let items = {
         details: document.querySelector('#details').value,
         login: document.querySelector('#login').value,
-        mdp: document.querySelector('#mdp').value
+        pass: document.querySelector('#mdp').value
     }
 
     ipcRenderer.send('items:add', items)

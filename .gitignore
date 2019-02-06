@@ -61,4 +61,4 @@ typings/
 .next
 
 # db files
-.db
+renderer/db/*.sqlite

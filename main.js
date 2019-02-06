@@ -1,8 +1,31 @@
 const electron = require('electron')
 const { app, BrowserWindow, Menu, MenuItem, ipcMain} = electron
+const knex = require('knex')({
+    client: 'sqlite3',
+    connection: {
+        filename: './renderer/db/database.sqlite'
+    },
+    useNullAsDefault: true
+})
 
 let mainWin
 let addPassWin
+
+//Création de la Table pass si elle n'existe pas
+knex.schema.hasTable('pass').then((exists) => {
+    if(!exists) {
+        knex.schema.createTable('pass', (table) => {
+            table.increments();
+            table.string('details');
+            table.string('login');
+            table.string('pass');
+            table.timestamps();
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+    }
+})
 
 // Fenêtre de création de mot de passe
 function createAddPassWindow() {
@@ -104,7 +127,14 @@ ipcMain.on('addPass:quit', (event,arg) => {
 })
 
 ipcMain.on('items:add', (event,arg) => {
-    mainWin.webContents.send('items:add', arg)
+    knex('pass')
+        .insert(arg)
+        .then( () => {
+            mainWin.webContents.send('items:show', arg)
+        })
+        .catch( (error) => {
+            console.error(error)
+        })
 })
 
 //////////////////////
