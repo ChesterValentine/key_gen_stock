@@ -128,10 +128,20 @@ ipcMain.on('addPass:quit', (event,arg) => {
 
 ipcMain.on('items:add', (event,arg) => {
     knex('pass')
+        .returning('id')
         .insert(arg)
-        .then( () => {
-            mainWin.webContents.send('items:show', arg)
+        .then( (id) => {
+            mainWin.webContents.send('items:show', Object.assign({ id:id[0] }, arg))
         })
+        .catch( (error) => {
+            console.error(error)
+        })
+})
+
+ipcMain.on('items:remove', (event,arg) => {
+    knex('pass')
+        .where('id', arg)
+        .del()
         .catch( (error) => {
             console.error(error)
         })

@@ -26,3 +26,8 @@
     background-color: rgb(24, 165, 66) !important;
     color: white !important;
 }
+
+tbody :hover {
+    background-color : rgba(73, 133, 163, 0.5) !important;
+    color : white !important;
+}
